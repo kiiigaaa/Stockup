@@ -19,8 +19,10 @@ function App() {
 
   const onPortfolioCreate = (e: any) => {
     e.preventDefault();
-    console.log(e);
-    //Arrays are tricky to update. Please wait till next video.
+    const exists = portfolioValues.find((value) => value === e.target[0].value);
+    if (exists) return;
+    const updatedPortfolio = [...portfolioValues, e.target[0].value];
+    setPortfolioValues(updatedPortfolio);
   };
 
   const onSearchSubmit = async (e: SyntheticEvent) => {
@@ -43,13 +45,13 @@ function App() {
         handleSearchChange={handleSearchChange}
       />
 
-      <ListPortfolio />
+      <ListPortfolio portfolioValues={portfolioValues}/>
 
       <CardList
         searchResults={searchResult}
         onPortfolioCreate={onPortfolioCreate}
       />
-      
+
       {serverError && <div>Unable to connect to API</div>}
       {/* {serverError ? <div>Connected</div> : <div>Unable to connect to api</div>} */}
     </div>
