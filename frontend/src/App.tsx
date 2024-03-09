@@ -5,6 +5,9 @@ import Search from './Component/Search/Search';
 import { CompanySearch } from './company';
 import { searchCompanies } from './api';
 import ListPortfolio from './Component/Portfolio/ListPortfolio/LstPortfolio';
+import Navbar from './Component/Navbar/Navbar';
+import Hero from "./Component/Hero/Hero";
+
 
 function App() {
 
@@ -25,6 +28,14 @@ function App() {
     setPortfolioValues(updatedPortfolio);
   };
 
+  const onPortfolioDelete = (e: any) => {
+    e.preventDefault();
+    const removed = portfolioValues.filter((value) => {
+      return value !== e.target[0].value;
+    });
+    setPortfolioValues(removed);
+  };
+
   const onSearchSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const result = await searchCompanies(search);
@@ -39,13 +50,18 @@ function App() {
   
   return (
     <div className="App">
-     <Search
+       <Navbar />
+       <Hero/>
+      <Search
         onSearchSubmit={onSearchSubmit}
         search={search}
         handleSearchChange={handleSearchChange}
       />
 
-      <ListPortfolio portfolioValues={portfolioValues}/>
+      <ListPortfolio
+        portfolioValues={portfolioValues}
+        onPortfolioDelete={onPortfolioDelete}
+      />
 
       <CardList
         searchResults={searchResult}
